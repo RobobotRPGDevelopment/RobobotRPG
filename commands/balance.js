@@ -7,7 +7,7 @@ module.exports = {
     usage: "{prefix}balance",
     adminOnly: false,
     tag: "economy", // Hidden tag for sorting
-    async run(client, message, args) {
+    async run(client, message, args, prefix) {
         try {
             // Fetch the user's balance
             const userBalance = await UserBalance.findOne({
@@ -16,7 +16,7 @@ module.exports = {
             });
 
             if (!userBalance) {
-                return message.reply("You do not have a balance record. Try rejoining the server.");
+                return message.reply("You do not have a balance record. Run " + prefix + "register to open a bank account.");
             }
 
             // Fetch the server's currency settings
