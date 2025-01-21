@@ -6,6 +6,7 @@ module.exports = {
     description: "Displays a list of commands or details about a specific command.",
     usage: "{prefix}help [command] (e.g., {prefix}help roll)",
     adminOnly: false,
+    tag: "info", // Hidden tag for sorting
     async run(client, message, args) {
         try {
             const commands = client.prefixCommands;
