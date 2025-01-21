@@ -36,7 +36,7 @@ const client = new Client({
 })();
 
 // Command Handling
-client.commands = new Collection(); // Collection for slash commands
+//client.commands = new Collection(); // Collection for slash commands
 client.prefixCommands = new Map(); // Collection for prefix commands
 
 // Recursive function to get all command files
@@ -60,6 +60,7 @@ const getAllCommandFiles = (dirPath, arrayOfFiles = []) => {
 // Define the commands folder and get all command files
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = getAllCommandFiles(commandsPath);
+    //commands is an array with all command file links
 
 // Debug log to verify file paths
 console.log('Command files being loaded:', commandFiles);
@@ -104,6 +105,10 @@ for (const file of eventFiles) {
 // Dynamic Prefix Command Handler
 client.on('messageCreate', async (message) => {
     console.log('Number of messageCreate listeners:', client.listenerCount('messageCreate'));
+    if(client.listenerCount('messageCreate') > 1) {
+        console.log('MessageCreate listener already exists.');
+        return;
+    }
     if (message.author.bot || !message.guild) return;
 
     try {
@@ -112,7 +117,7 @@ client.on('messageCreate', async (message) => {
         const prefix = settings ? settings.prefix : defaultPrefix;
 
         // Debug: Log detected prefix
-        console.log(`Detected prefix for guild ${message.guild.id}: ${prefix}`);
+        console.log(`Detected prefix for guild ${message.guild.name}: ${prefix}`);
 
         if (!message.content.startsWith(prefix)) return;
 
@@ -128,7 +133,7 @@ client.on('messageCreate', async (message) => {
             return;
         }
 
-        await prefixCommand.run(client, message, args);
+        await prefixCommand.run(client, message, args, prefix);
         console.log(`Executed command: ${commandName}`);
     } catch (error) {
         console.error('Error handling messageCreate event:', error);
