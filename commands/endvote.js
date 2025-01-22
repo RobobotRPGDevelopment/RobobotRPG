@@ -4,10 +4,10 @@ const { adminOnly } = require('./roll');
 module.exports = {
     name: "endvote",
     description: "Ends the current vote (only the creator can end it).",
-    usage: "$endvote",
+    usage: "{prefix}endvote",
     adminOnly: false,
     tag: "voting", // Hidden tag for sorting
-    async run(client, message, args) {
+    async run(client, message, args, prefix) {
         try {
             const activeVote = await Vote.findOne({ guildId: message.guild.id });
 

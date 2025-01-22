@@ -4,12 +4,12 @@ const { adminOnly } = require('./roll');
 module.exports = {
     name: "createvote",
     description: "Creates a new vote with a specified topic and expiration period.",
-    usage: "$createvote {vote topic} {expiration in hours} (e.g., $createvote \"Should we add new features?\", 2)",
+    usage: "{prefix}createvote {vote topic} {expiration in hours} (e.g., {prefix}createvote \"Should we add new features?\", 2)",
     adminOnly: false,
     tag: "voting", // Hidden tag for sorting
-    async run(client, message, args) {
+    async run(client, message, args, prefix) {
         if (args.length < 2) {
-            return message.reply("Usage: $createvote {vote topic} {expiration in hours}.");
+            return message.reply(`Usage: ${prefix}createvote {vote topic} {expiration in hours}.`);
         }
 
         const expirationHours = parseInt(args.pop());
@@ -24,7 +24,7 @@ module.exports = {
         try {
             const existingVote = await Vote.findOne({ guildId: message.guild.id });
             if (existingVote) {
-                return message.reply("A vote is already active in this server. End it with $endvote before creating a new one.");
+                return message.reply("A vote is already active in this server. End it with ${prefix}endvote before creating a new one.");
             }
 
             await Vote.create({

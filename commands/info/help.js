@@ -6,8 +6,7 @@ module.exports = {
     description: "Displays a list of commands or details about a specific command.",
     usage: "{prefix}help [command] (e.g., {prefix}help roll)",
     adminOnly: false,
-    tag: "info", // Hidden tag for sorting
-    async run(client, message, args) {
+    async run(client, message, args, prefix) {
         try {
             const commands = client.prefixCommands;
 
@@ -45,7 +44,7 @@ module.exports = {
             // Display detailed help for the specific command
             return message.reply(
                 `**Command:** ${prefix}${command.name}\n` +
-                `**Description:** ${command.description}\n` +
+                `**Description:** ${command.description.replace(/{prefix}/g, prefix)}\n` +
                 `**Usage:** ${command.usage.replace(/{prefix}/g, prefix) || "No usage information available."}`
             );
         } catch (error) {
