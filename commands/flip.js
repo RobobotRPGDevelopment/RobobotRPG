@@ -4,7 +4,7 @@ module.exports = {
     usage: "{prefix}flip",
     adminOnly: false,
     tag: "chance", // Hidden tag for sorting
-    async run(client, message, args) {
+    async run(client, message, args, prefix) {
         // Generate a random number for the coin flip
         const random = Math.floor(Math.random() * 6000); // 0 to 5999
         let result;

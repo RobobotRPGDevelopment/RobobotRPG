@@ -128,7 +128,7 @@ client.on('messageCreate', async (message) => {
             return;
         }
 
-        await prefixCommand.run(client, message, args);
+        await prefixCommand.run(client, message, args, prefix);
         console.log(`Executed command: ${commandName}`);
     } catch (error) {
         console.error('Error handling messageCreate event:', error);

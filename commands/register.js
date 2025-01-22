@@ -7,7 +7,7 @@ module.exports = {
     usage: "{prefix}register",
     adminOnly: false,
     tag: "economy", // Hidden tag for sorting
-    async run(client, message, args) {
+    async run(client, message, args, prefix) {
         try {
             member = message.author;
             // Fetch the user's balance
@@ -16,7 +16,7 @@ module.exports = {
                 guildId: message.guild.id,
             });
             if (existingUser) {
-                return message.reply(`You already have a bank account. Run ${prefix} balance to check your balance.`);
+                return message.reply(`You already have a bank account. Run ${prefix}balance to check your balance.`);
             }
             else {
                 await UserBalance.create({
