@@ -7,12 +7,14 @@ const taskListSchema = new mongoose.Schema({
         {
             description: { type: String, required: true },
             completed: { type: Boolean, default: false },
+            dueDate: { type: Date, required: false},
+            difficulty: { type: Number, required: false},    
         },
     ],
 }, { timestamps: true });
 
 // Create and export the model
-const taskList = mongoose.model('TaskList', taskListSchema);
+const tasksList = mongoose.model('TasksList', taskListSchema);
 
-module.exports = taskList;
+module.exports = tasksList;
 

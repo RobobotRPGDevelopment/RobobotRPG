@@ -14,7 +14,6 @@ module.exports = {
                 `Usage: ${prefix}bet ${prefix}roll {x}d{y} {condition/number} {amount} (e.g., ${prefix}bet ${prefix}roll 1d20 15 50)`
             );
         }
-
         const chainedCommand = args[0].toLowerCase(); // e.g., $roll
         const rollParams = args[1]; // e.g., 1d20
         const conditionOrNumber = args[2].toLowerCase(); // e.g., over, under, or exact number
