@@ -1,11 +1,10 @@
 const UserBalance = require('../utils/userBalance'); // Import user balance schema
 const serverSettings = require('../utils/serverSettings'); // Import server settings
-const prefix = require('../utils/serverSettings');
 
 module.exports = {
     name: "bet",
-    description: `Place a bet on a chained command like ${prefix}flip or ${prefix}roll.`,
-    usage: `${prefix}bet {chained command} {arguments} {amount} (e.g., ${prefix}bet ${prefix}roll 1d20 15 50)`,
+    description: "Place a bet on a chained command like {prefix}flip or {prefix}roll.",
+    usage: "{prefix}bet {chained command} {arguments} {amount} (e.g., {prefix}bet {prefix}roll 1d20 15 50)",
     adminOnly: false,
     tag: "chance", // Hidden tag for sorting
     async run(client, message, args, prefix) {

@@ -4,10 +4,10 @@ module.exports = {
     usage: "{prefix}roll {x}d{y} (e.g., {prefix}roll 2d20)",
     adminOnly: false,
     tag: "chance", // Hidden tag for sorting
-    async run(client, message, args) {
+    async run(client, message, args, prefix) {
         // Validate input
         if (!args.length) {
-            return message.reply("Usage: $roll {x}d{y} (e.g., $roll 2d20)");
+            return message.reply(`Usage: ${prefix}roll {x}d{y} (e.g., ${prefix}roll 2d20)`);
         }
 
         const input = args[0];
@@ -15,7 +15,7 @@ module.exports = {
         const match = input.match(diceRegex);
 
         if (!match) {
-            return message.reply("Invalid format. Use: {prefix} roll {x}d{y} (e.g., $roll 2d20)");
+            return message.reply(`Invalid format. Use: ${prefix}roll {x}d{y} (e.g., ${prefix}roll 2d20)`);
         }
 
         const numberOfDice = parseInt(match[1], 10);
