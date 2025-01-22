@@ -15,7 +15,7 @@ module.exports = {
         const match = input.match(diceRegex);
 
         if (!match) {
-            return message.reply("Invalid format. Use: $roll {x}d{y} (e.g., $roll 2d20)");
+            return message.reply("Invalid format. Use: {prefix} roll {x}d{y} (e.g., $roll 2d20)");
         }
 
         const numberOfDice = parseInt(match[1], 10);
