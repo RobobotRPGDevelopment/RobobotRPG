@@ -16,7 +16,7 @@ module.exports = {
                 guildId: message.guild.id,
             });
             if (existingUser) {
-                return message.reply("You already have a bank account. Run " + prefix + "balance to check your balance.");
+                return message.reply(`You already have a bank account. Run ${prefix}balance to check your balance.`);
             }
             else {
                 await UserBalance.create({
