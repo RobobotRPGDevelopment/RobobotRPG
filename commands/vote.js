@@ -4,12 +4,12 @@ const { adminOnly } = require('./roll');
 module.exports = {
     name: "vote",
     description: "Casts a vote on the active topic.",
-    usage: "$vote {yes|no} (e.g., $vote yes)",
+    usage: "{prefix}vote {yes|no} (e.g., {prefix}vote yes)",
     adminOnly: false,
     tag: "voting", // Hidden tag for sorting
-    async run(client, message, args) {
+    async run(client, message, args, prefix) {
         if (args.length < 1 || !["yes", "no"].includes(args[0].toLowerCase())) {
-            return message.reply("Usage: $vote {yes|no}.");
+            return message.reply(`Usage: ${prefix}vote {yes|no} (e.g., ${prefix}vote yes).`);
         }
 
         const userVote = args[0].toLowerCase();

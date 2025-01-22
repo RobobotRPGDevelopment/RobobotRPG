@@ -3,15 +3,15 @@ const serverSettings = require('../utils/serverSettings'); // Import server sett
 
 module.exports = {
     name: "bet",
-    description: "Place a bet on a chained command like $flip or $roll.",
-    usage: "{prefix}bet {chained command} {arguments} {amount} (e.g., {prefix}bet $roll 1d20 15 50)",
+    description: "Place a bet on a chained command like {prefix}flip or {prefix}roll.",
+    usage: "{prefix}bet {chained command} {arguments} {amount} (e.g., {prefix}bet {prefix}roll 1d20 15 50)",
     adminOnly: false,
     tag: "chance", // Hidden tag for sorting
-    async run(client, message, args) {
+    async run(client, message, args, prefix) {
         // Validate input
         if (args.length < 3) {
             return message.reply(
-                "Usage: {prefix}bet $roll {x}d{y} {condition/number} {amount} (e.g., $bet $roll 1d20 15 50)"
+                `Usage: ${prefix}bet ${prefix}roll {x}d{y} {condition/number} {amount} (e.g., ${prefix}bet ${prefix}roll 1d20 15 50)`
             );
         }
 

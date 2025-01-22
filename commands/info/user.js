@@ -4,7 +4,7 @@ module.exports = {
     usage: "{prefix}user",
     adminOnly: false,
     tag: "info", // Hidden tag for sorting
-    run: async (client, message, args) => {
+    run: async (client, message, args, prefix) => {
         // Ensure the message is in a guild
         if (!message.guild) {
             return message.reply('This command can only be used in a server.');
