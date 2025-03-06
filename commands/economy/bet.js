@@ -1,5 +1,5 @@
-const UserBalance = require('../utils/userBalance'); // Import user balance schema
-const serverSettings = require('../utils/serverSettings'); // Import server settings
+const UserBalance = require('../../utils/userBalance'); // Import user balance schema
+const serverSettings = require('../../utils/serverSettings'); // Import server settings
 
 module.exports = {
     name: "bet",

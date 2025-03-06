@@ -1,5 +1,5 @@
-const Vote = require('../utils/voteSchema');
-const { adminOnly } = require('./roll');
+const Vote = require('../../utils/voteSchema');
+// const { adminOnly } = require('./roll');
 
 module.exports = {
     name: "createvote",
