@@ -11,7 +11,10 @@ const taskSchema = new mongoose.Schema({
     difficulty: { type: Number, required: false},
 }, { timestamps: true });
 
+// Create compound index for userId and guildId
+taskSchema.index({ userId: 1, guildId: 1 });
+
 // Create and export the model
-const task = mongoose.model('Task', taskSchema);
-module.exports = task;
+const Task = mongoose.model('Task', taskSchema);
+module.exports = Task;
 
