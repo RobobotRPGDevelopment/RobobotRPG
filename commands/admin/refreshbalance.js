@@ -31,7 +31,6 @@ module.exports = {
                     createdCount++;
                 }
             }
-
             message.reply(
                 `Balance refresh complete. ${createdCount} new balance records were created.`
             );
