@@ -1,0 +1,29 @@
+{
+"levels": [
+    {
+        "level": 0,
+        "quests": [
+        {
+            "name": "Mine 5 Iron Ore",
+            "elevatorDescription": "A few steps into Swann's Mountain, there is a deposit of Iron Ore.",
+            "reward": 100,
+            "experience": 50,
+            "skills": ["mining"],
+            "requirements": {
+                "mining": 0
+            }
+        },
+        {
+            "name": "Mine 5 Coal Ore",
+            "elevatorDescription": "A few steps into Swann's Mountain, there is a deposit of Coal Ore.",
+            "reward": 100,
+            "experience": 50,
+            "skills": ["mining"],
+            "requirements": {
+                "mining": 0
+            }
+        }
+        ]
+    }
+]
+}
