@@ -6,4 +6,6 @@ const userBalanceSchema = new mongoose.Schema({
     balance: { type: Number, default: 0 },
 });
 
+userBalanceSchema.index({ userId: 1, guildId: 1 }, { unique: true });
+
 module.exports = mongoose.model('UserBalance', userBalanceSchema);
