@@ -1,4 +1,4 @@
-const serverSettings = require('../../utils/serverSettings'); // Import the schema
+const serverSettings = require('../../utils/models/serverSettings'); // Import the schema
 
 module.exports = {
     name: "setcurrency",

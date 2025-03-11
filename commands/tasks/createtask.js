@@ -1,4 +1,4 @@
-const Task = require("../../utils/taskSchema");
+const Task = require("../../utils/models/Task");
 
 module.exports = {
     name: "createtask",
@@ -41,10 +41,6 @@ module.exports = {
                 category: category,
                 difficulty: difficulty
             });
-            
-            // Calculate rewards based on difficulty
-            const xpReward = difficulty * 50;
-            const coinReward = difficulty * 25;
             
             message.reply(
                 `Task created: **${taskName}**\n` +

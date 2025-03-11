@@ -1,5 +1,5 @@
-const UserBalance = require('../../utils/userBalance'); // Import user balance schema
-const serverSettings = require('../../utils/serverSettings'); // Import server settings
+const User = require('../../utils/models/User'); // Import user balance schema
+const serverSettings = require('../../utils/models/serverSettings'); // Import server settings
 
 module.exports = {
     name: "addbalance",
@@ -30,22 +30,28 @@ module.exports = {
         const userId = userIdMatch[1];
 
         try {
-            let userBalance = await UserBalance.findOne({
+            let user = await User.findOne({
                 userId,
                 guildId: message.guild.id,
             });
 
-            if (!userBalance) {
-                userBalance = await UserBalance.create({
+            if (!user) {
+                user = await User.create({
                     userId,
                     guildId: message.guild.id,
+                    balance: 0,
+                    activeQuest: {
+                        quest: null,
+                        completed: false,
+                    },
+                    availableQuests: [],
                 });
 
                 message.reply(`Created a new balance record for <@${userId}>.`);
             }
 
-            userBalance.balance += amount;
-            await userBalance.save();
+            user.balance += amount;
+            await user.save();
 
             const settings = await serverSettings.findOne({ guildId: message.guild.id });
             const currencyName = settings ? settings.currencyName : "Coins";

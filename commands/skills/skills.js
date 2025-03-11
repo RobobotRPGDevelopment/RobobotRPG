@@ -1,6 +1,6 @@
-const UserSkills = require('../../utils/userSkills'); // Import the user balance schema
-const serverSettings = require('../../utils/serverSettings'); // Import server settings
-const botMessages = require('../../utils/botMessages');
+const UserSkills = require('../../utils/models/userSkills'); // Import the user balance schema
+const serverSettings = require('../../utils/models/serverSettings'); // Import server settings
+const botMessages = require('../../utils/helpers/botMessages');
 module.exports = {
     name: "skills",
     description: "Check your current skill levels.",

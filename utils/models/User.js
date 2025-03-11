@@ -2,99 +2,97 @@ const mongoose = require('mongoose');
 const UserCompletedQuests = require('./UserCompletedQuests');
 
 const UserSchema = new mongoose.Schema({
-    userId: { type: String, required: true, unique: true },
+    userId: { type: String, required: true },
     guildId: { type: String, required: true },
     balance: { type: Number, default: 0 },
+    
+    // Quest-related fields
     activeQuest: {
         quest: { type: mongoose.Schema.Types.ObjectId, ref: 'Quest' },
-        completed: { type: Boolean, default: false },
+        startedAt: { type: Date },
+        completed: { type: Boolean, default: false }
     },
+    
     availableQuests: [{
         quest: { type: mongoose.Schema.Types.ObjectId, ref: 'Quest' },
-    }],
+        expiresAt: { type: Date, default: null }
+    }]
+}, { 
+    timestamps: true,
+    methods: {
+        async acceptQuest(questIndex) {
+            if (this.activeQuest.quest) {
+                throw new Error('Already have an active quest');
+            }
+            
+            if (questIndex < 0 || questIndex >= this.availableQuests.length) {
+                throw new Error('Invalid quest index');
+            }
+            
+            const selectedQuest = this.availableQuests[questIndex];
+            this.activeQuest = {
+                quest: selectedQuest.quest,
+                startedAt: new Date(),
+                completed: false
+            };
+            
+            this.availableQuests.splice(questIndex, 1);
+            return this.activeQuest;
+        },
+
+        async completeQuest() {
+            if (!this.activeQuest.quest) {
+                throw new Error('No active quest to complete');
+            }
+
+            if (!this.activeQuest.completed) {
+                throw new Error('Quest not yet completed');
+            }
+
+            const completedQuest = this.activeQuest.quest;
+            
+            // Record completion - this saves automatically due to findOneAndUpdate
+            await UserCompletedQuests.findOneAndUpdate(
+                { userId: this.userId, guildId: this.guildId },
+                {
+                    $push: {
+                        completedQuests: {
+                            quest: completedQuest._id,
+                            completedAt: new Date(),
+                            rewardedExp: completedQuest.reward.experience,
+                            rewardedCurrency: completedQuest.reward.currency
+                        }
+                    }
+                },
+                { upsert: true, new: true }
+            );
+
+            // Update balance
+            this.balance += completedQuest.reward.currency;
+
+            // Clear active quest
+            this.activeQuest = {
+                quest: null,
+                completed: false
+            };
+
+            // Note: We don't save here because the service layer will handle saving
+            return {
+                quest: completedQuest,
+                rewards: {
+                    experience: completedQuest.reward.experience,
+                    currency: completedQuest.reward.currency
+                }
+            };
+        },
+    }
 });
 
-// Quests
-UserSchema.methods.acceptQuest = async function(questIndex) {
-    if (this.activeQuest.quest) {
-        throw new Error('Already have an active quest');
-    }
-    
-    if (questIndex < 0 || questIndex >= this.availableQuests.length) {
-        throw new Error('Invalid quest index');
-    }
-
-    // Move quest from available to active
-    const selectedQuest = this.availableQuests[questIndex];
-    this.activeQuest = {
-        quest: selectedQuest.quest,
-    };
-    
-    // Remove from available quests
-    this.availableQuests.splice(questIndex, 1);
-    return this.activeQuest;
-};
-
-UserSchema.methods.completeQuest = async function() {
-    // Check if there's an active quest
-    if (!this.activeQuest.quest) {
-        throw new Error('No active quest to complete');
-    }
-
-    // Make sure the quest is populated
-    await this.populate('activeQuest.quest');
-    const completedQuest = this.activeQuest.quest;
-
-    // Calculate rewards based on quest difficulty
-    const rewardedCurrency = completedQuest.baseRewardCurrency;
-    const rewardedEXP = completedQuest.baseRewardEXP;
-
-    // Find or create UserCompletedQuests document
-    let userCompletedQuests = await UserCompletedQuests.findOne({
-        userId: this.userId,
-        guildId: this.guildId
-    });
-
-    if (!userCompletedQuests) {
-        userCompletedQuests = new UserCompletedQuests({
-            userId: this.userId,
-            guildId: this.guildId,
-            completedQuests: []
-        });
-    }
-
-    // Add to completed quests
-    userCompletedQuests.completedQuests.push({
-        quest: completedQuest._id,
-        completedAt: new Date(),
-        rewardedExp: rewardedExp,
-        rewardedCurrency: rewardedCurrency
-    });
-
-    // Update user's balance
-    this.balance += rewardedCurrency;
-
-    // Clear active quest
-    this.activeQuest = {
-        quest: null,
-        completed: false
-    };
-
-    // Save both documents
-    await Promise.all([
-        userCompletedQuests.save(),
-        this.save()
-    ]);
-
-    return {
-        quest: completedQuest,
-        rewards: {
-            skills: rewardedEXP,
-            currency: rewardedCurrency
-        }
-    };
-};
-
 UserSchema.index({ userId: 1, guildId: 1 }, { unique: true });
+
+// Validations
+UserSchema.path('availableQuests').validate(function(quests) {
+    return quests.length <= 3;
+}, 'Cannot have more than 3 available quests');
 
 module.exports = mongoose.model('User', UserSchema);

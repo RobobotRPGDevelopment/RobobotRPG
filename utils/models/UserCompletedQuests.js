@@ -4,7 +4,7 @@ const userCompletedQuestsSchema = new mongoose.Schema({
     userId: { type: String, required: true },
     guildId: { type: String, required: true },
     completedQuests: [{
-        questId: { type: mongoose.Schema.Types.ObjectId, ref: 'Quest' },
+        quest: { type: mongoose.Schema.Types.ObjectId, ref: 'Quest' },
         completedAt: { type: Date, default: Date.now },
         rewardedExp: [{
             skill: String,

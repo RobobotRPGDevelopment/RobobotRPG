@@ -1,4 +1,4 @@
-const Vote = require('../../utils/voteSchema'); // Import the vote schema
+const Vote = require('../../utils/models/voteSchema'); // Import the vote schema
 // const { adminOnly } = require('./roll');
 
 module.exports = {

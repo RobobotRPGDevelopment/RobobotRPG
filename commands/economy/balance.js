@@ -1,5 +1,5 @@
-const UserBalance = require('../../utils/userBalance'); // Import the user balance schema
-const serverSettings = require('../../utils/serverSettings'); // Import server settings
+const User = require('../../utils/models/User'); // Import the user balance schema
+const serverSettings = require('../../utils/models/serverSettings'); // Import server settings
 
 module.exports = {
     name: "balance",
@@ -10,12 +10,12 @@ module.exports = {
     async run(client, message, args, prefix) {
         try {
             // Fetch the user's balance
-            const userBalance = await UserBalance.findOne({
+            const user = await User.findOne({
                 userId: message.author.id,
                 guildId: message.guild.id,
             });
 
-            if (!userBalance) {
+            if (!user.balance) {
                 return message.reply("You do not have a balance record. Run " + prefix + "register to open a bank account.");
             }
 

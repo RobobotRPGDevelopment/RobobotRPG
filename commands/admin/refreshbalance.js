@@ -1,4 +1,4 @@
-const UserBalance = require('../../utils/userBalance'); // Import the schema
+const User = require('../../utils/models/User'); // Import the schema
 
 module.exports = {
     name: "refreshbalance",
@@ -18,15 +18,21 @@ module.exports = {
             for (const member of members.values()) {
                 if (member.user.bot) continue;
 
-                const existingRecord = await UserBalance.findOne({
+                const existingRecord = await User.findOne({
                     userId: member.user.id,
                     guildId: message.guild.id,
                 });
 
                 if (!existingRecord) {
-                    await UserBalance.create({
+                    await UserActivation.create({
                         userId: member.user.id,
                         guildId: message.guild.id,
+                        balance: 0,
+                        activeQuest: {
+                            quest: null,
+                            completed: false,
+                        },
+                        availableQuests: [],
                     });
                     createdCount++;
                 }

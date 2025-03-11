@@ -8,17 +8,20 @@ const questSchema = new mongoose.Schema({
     difficulty: { type: Number, required: true },
     category: { type: String, required: true },
     requirements: { 
-        requiredSkills: [{ 
+        primarySkills: [{ // Need all primary skill levels
             skill: String,
             level: Number,
         }],
-        secondarySkills: [{ 
+        secondarySkills: [{  // Need just one of the secondary skill levels
             skill: String,
             level: Number,
         }],
     },
     repeatable: { type: Number, required: true }, // 0 for not repeatable
-    baseRewardEXP: { type: Number, required: true },
+    baseRewardEXP: [{
+        skill: String,
+        amount: Number,
+        }],
     baseRewardCurrency: { type: Number, required: true },
     rewardText: { type: String, required: true },
     failureText: { type: String, required: true },

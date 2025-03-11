@@ -1,7 +1,7 @@
-const createRecord = require('../utils/createRecord');
-const UserBalance = require('../utils/userBalance'); // Import the user balance schema
-const UserSkills = require('../utils/userSkills');
-const serverSettings = require('../utils/serverSettings'); // Import server settings
+const createRecord = require('../../utils/createRecord');
+const User = require('../../utils/models/User'); // Import the user schema
+const UserSkills = require('../../utils/models/userSkills');
+const serverSettings = require('../../utils/models/serverSettings'); // Import server settings
 
 module.exports = {
     name: "register",
@@ -22,7 +22,7 @@ module.exports = {
                 message.guild.id, 
                 settings, 
                 prefix, 
-                UserBalance, 
+                User,
                 createRecord.successBankMessage,
                 createRecord.existingBankMessage,
                 message  // Pass the message object

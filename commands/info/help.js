@@ -1,4 +1,4 @@
-const serverSettings = require('../../utils/serverSettings'); // Import server settings
+const serverSettings = require('../../utils/models/serverSettings'); // Import server settings
 // const { adminOnly } = require('../utilities/roll');
 
 module.exports = {

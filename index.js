@@ -10,10 +10,10 @@ dotenv.config();
 const token = process.env.TOKEN;
 
 // Import server settings schema for prefix handling
-const serverSettings = require('./utils/serverSettings');
+const serverSettings = require('./utils/models/serverSettings');
 
 // Import expiration check function
-const checkExpiredVotes = require('./utils/expirationCheck');
+const checkExpiredVotes = require('./utils/helpers/expirationCheck');
 
 // Create a new client instance
 const client = new Client({
