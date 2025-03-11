@@ -23,7 +23,7 @@ module.exports = {
         }
         try {
             const task = await TaskService.createTask(taskData);
-            let response = `Task created: **${taskName}**\n` + `Category: ${category}`;
+            let response = `Task created: **${taskName}**\n` + `Category: **${category}**`;
             if (task.difficulty) {
                 response += `\nDifficulty: ${"⭐".repeat(task.difficulty)}`;
             }
@@ -38,12 +38,12 @@ module.exports = {
             if(paradigm.isNew) {
                 let skill = paradigm.paradigm.skill
                 console.log("skill", skill);
-                let skillFormatted = skill.charAt(0).toUpperCase() + skill.slice(1);
-                console.log("skillFormatted", skillFormatted);
-                message.reply(`You have unlocked a new skill: **${skillFormatted}** unlocked!\n` +
-                    `A paradigm has been created between ${category} tasks and ${skillFormatted}!\n` +
-                    `Any ${category} tasks are now completely interwoven with your ${skillFormatted} ability!\n` +
-                    `You can now use the ${prefix}paradigm command to view your paradigms.`
+                let skillUppercase = skill.charAt(0).toUpperCase() + skill.slice(1);
+                console.log("skillUppercase", skillUppercase);
+                message.reply(`You have unlocked a new skill: **${skillUppercase}** has been unlocked!\n` +
+                    `A paradigm has been created between ${category} tasks and ${skill}!\n` +
+                    `Any ${category} tasks are now inexplicably interwoven with your ${skill} ability!\n` +
+                    `You can now use the ${prefix}paradigms command to view your paradigms.`
                 );
             }
             else {
