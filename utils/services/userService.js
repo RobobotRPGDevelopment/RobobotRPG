@@ -18,7 +18,6 @@ class UserService {
             userId,
             guildId
         });
-
         return user;
     }
 
@@ -27,10 +26,32 @@ class UserService {
      */
     static async getOrCreateUser(userId, guildId, settings) {
         let user = await User.findOne({ userId, guildId });
+        console.log("user is", user);
         if (!user) {
             user = await this.createUser(userId, guildId, settings);
+            return { user, isNew: true }; // Return object with both values
         }
-        return user;
+        return { user, isNew: false }; // Return object with both values
+    }
+
+    /**
+     * Create skills document for a user
+     */
+    static async createSkills(userId, guildId) {
+        const skills = await UserSkills.create({ userId, guildId });
+        return skills;
+    }
+
+    /**
+     * Get or create skills document for a user
+     */
+    static async getOrCreateSkills(userId, guildId) {
+        let skills = await UserSkills.findOne({ userId, guildId });
+        if (!skills) {
+            skills = await this.createSkills(userId, guildId);
+            return { skills, isNew: true }; // Return object with both values
+        }
+        return { skills, isNew: false }; // Return object with both values
     }
 
     /**
@@ -87,6 +108,27 @@ class UserService {
             .populate('completedQuests.quest');
         
         return completedQuests?.completedQuests || [];
+    }
+
+    /**
+     * Get user's balance with formatted currency
+     */
+    static async getBalance(userId, guildId, settings) {
+        const user = await User.findOne({ userId, guildId });
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        const currencyName = settings?.currencyName || "Coins";
+        const currencySymbol = settings?.currencySymbol || "$";
+
+        return {
+            balance: user.balance,
+            formatted: `${currencySymbol}${user.balance}`,
+            raw: user.balance,
+            currencyName,
+            currencySymbol
+        };
     }
 }
 

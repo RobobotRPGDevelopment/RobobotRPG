@@ -1,5 +1,5 @@
-const User = require('../../utils/models/User'); // Import the user balance schema
-const serverSettings = require('../../utils/models/serverSettings'); // Import server settings
+const UserService = require('../../utils/services/userService');
+const serverSettings = require('../../utils/models/serverSettings');
 
 module.exports = {
     name: "balance",
@@ -9,26 +9,22 @@ module.exports = {
     tag: "economy", // Hidden tag for sorting
     async run(client, message, args, prefix) {
         try {
-            // Fetch the user's balance
-            const user = await User.findOne({
-                userId: message.author.id,
-                guildId: message.guild.id,
-            });
-
-            if (!user.balance) {
-                return message.reply("You do not have a balance record. Run " + prefix + "register to open a bank account.");
-            }
-
-            // Fetch the server's currency settings
+            // Fetch server settings first
             const settings = await serverSettings.findOne({ guildId: message.guild.id });
-            const currencyName = settings ? settings.currencyName : "Coins";
-            const currencySymbol = settings ? settings.currencySymbol : "$";
-
-            message.reply(
-                `Your current balance is: ${currencySymbol}${userBalance.balance} ${currencyName}`
+            // Get balance through userService (service files are gonna be used from here on out by commands)
+            const balance = await UserService.getBalance(
+                message.author.id,
+                message.guild.id,
+                settings
             );
+
+            message.reply(`Your current balance is: ${balance.formatted}`);
+            
         } catch (error) {
-            console.error(`Error fetching balance for user ${message.author.id}:`, error);
+            if (error.message === 'User not found') {
+                return message.reply(`You don't have a bank account yet. Use ${prefix}register to create one.`);
+            }
+            console.error(`Error in balance command:`, error);
             message.reply("An error occurred while checking your balance. Please try again later.");
         }
     },
