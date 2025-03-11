@@ -36,10 +36,13 @@ module.exports = {
         try {
             const paradigm = await SkillsService.findOrCreateParadigm(message.author.id, message.guild.id, category);
             if(paradigm.isNew) {
-                let skill = paradigm.Paradigm.skill.charAt(0).toUpperCase() + paradigm.Paradigm.skill.slice(1);
-                message.reply(`You have unlocked a new skill: **${skill}** unlocked!\n` +
-                    `A paradigm has been created between ${category} tasks and ${skill}!\n` +
-                    `Any ${category} tasks are now completely interwoven with your ${skill} ability!\n` +
+                let skill = paradigm.paradigm.skill
+                console.log("skill", skill);
+                let skillFormatted = skill.charAt(0).toUpperCase() + skill.slice(1);
+                console.log("skillFormatted", skillFormatted);
+                message.reply(`You have unlocked a new skill: **${skillFormatted}** unlocked!\n` +
+                    `A paradigm has been created between ${category} tasks and ${skillFormatted}!\n` +
+                    `Any ${category} tasks are now completely interwoven with your ${skillFormatted} ability!\n` +
                     `You can now use the ${prefix}paradigm command to view your paradigms.`
                 );
             }

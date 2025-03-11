@@ -16,8 +16,10 @@ class SkillsService {
         
         if (!existingParadigm) {
             const newParadigm = await this.createParadigm(userId, guildId, taskCategory, userSkills);
+            console.log("newParadigm", newParadigm);
             return { paradigm: newParadigm, isNew: true };
         }
+        console.log("existingParadigm", existingParadigm);
         return { paradigm: existingParadigm, isNew: false };
     }
 
@@ -41,43 +43,8 @@ class SkillsService {
         return newParadigm;
     }
 
-    static async addCategoryToExistingSkill(userId, guildId, taskCategory) {
-        const userSkills = await this.getSkills(userId, guildId);
-        
-        // Find skill with fewest categories
-        const skillCounts = new Map();
-        SKILL_HIERARCHY.primary.concat(SKILL_HIERARCHY.secondary, SKILL_HIERARCHY.tertiary)
-            .forEach(skill => skillCounts.set(skill, 0));
-        
-        userSkills.paradigms.forEach(paradigm => {
-            const count = skillCounts.get(paradigm.skill) || 0;
-            skillCounts.set(paradigm.skill, count + 1);
-        });
-
-        // Find skill with lowest count
-        let lowestCount = Infinity;
-        let selectedSkill = null;
-        
-        skillCounts.forEach((count, skill) => {
-            if (count < lowestCount) {
-                lowestCount = count;
-                selectedSkill = skill;
-            }
-        });
-
-        if (!selectedSkill) {
-            throw new Error("No skills available");
-        }
-
-        const newParadigm = {
-            category: taskCategory,
-            skill: selectedSkill
-        };
-        
-        userSkills.paradigms.push(newParadigm);
-        await userSkills.save();
-        return newParadigm;
-    }
+    //TODO: Write Function
+    static async addCategoryToExistingSkill(userId, guildId, taskCategory) {}
 
     /*
     * Returns a random new skill of the lowest tier available
