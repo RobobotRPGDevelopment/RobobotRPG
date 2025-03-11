@@ -1,52 +1,34 @@
-const Task = require("../../utils/models/Task");
+const TaskService = require("../../utils/services/taskService");
 
 module.exports = {
     name: "createtask",
     description: "Create a task for a user.",
-    usage: '{prefix}createtask "Task Name" category difficulty',
+    usage: '{prefix}createtask "Task Name" category (optional: difficulty)',
     adminOnly: false,
     tag: "tasks",
     async run(client, message, args, prefix) {
         if (args.length < 2) {
-            return message.reply(`Usage: ${prefix}createtask "Task Name" category difficulty.`);
+            return message.reply(`Usage: ${prefix}createtask "Task Name" category (optional: difficulty).`);
         }
         const taskName = args[0];
         const category = args[1];
-        
-        // Check if the third argument is a number (difficulty) or a string (description)
-        let difficulty = 1;
-        
-        if (args.length >= 3) {
-            // If the third argument is a number, it's the difficulty
-            if (!isNaN(parseInt(args[2]))) {
-                difficulty = parseInt(args[2]);
-            // TODO: This is where we will set the due date
-            //     // If there's a fourth argument, it's the description
-            //     if (args.length >= 4) {
-            //         description = args[3];
-            //     }
-            // } else {
-            //     // If the third argument is not a number, it's the description
-            //     description = args[2];
-            // }
-            }
+        const taskData = {
+            userId: message.author.id,
+            guildId: message.guild.id,
+            name: taskName,
+            category: category
+        };
+        if (args.length >= 3 && !isNaN(parseInt(args[2]))) {
+            taskData.difficulty = parseInt(args[2]);
         }
-        
+
         try {
-            // Create a new task with auto-generated taskId
-            const newTask = await Task.create({
-                userId: message.author.id,
-                guildId: message.guild.id,
-                name: taskName,
-                category: category,
-                difficulty: difficulty
-            });
-            
-            message.reply(
-                `Task created: **${taskName}**\n` +
-                `Category: ${category}\n` +
-                `Difficulty: ${"⭐".repeat(difficulty)}`
-            );
+            const task = await TaskService.createTask(taskData);
+            let response = `Task created: **${taskName}**\n` + `Category: ${category}`;
+            if (task.difficulty) {
+                response += `\nDifficulty: ${"⭐".repeat(task.difficulty)}`;
+            }
+            message.reply(response);
         }
         catch (error) {
             console.error(error);

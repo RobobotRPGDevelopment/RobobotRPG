@@ -120,21 +120,14 @@ client.on('messageCreate', async (message) => {
         console.log(`Detected prefix for guild ${message.guild.name}: ${prefix}`);
 
         if (!message.content.startsWith(prefix)) return;
-        // const args = message.content.slice(prefix.length).trim().split(/ +/);
-        // const args = message.content.slice(prefix.length).trim().match(/(?:["'])(.+)(?:\1\s)/g) || [];
-        const args = message.content.slice(prefix.length).trim().match(/(?:["']([^"']*?)["'])|([^\s"']+)/g);
-        // Process the arguments to remove quotes from quoted arguments
-        for (let i = 0; i < args.length; i++) {
-            // If the argument is wrapped in quotes, remove them
-            if (args[i].startsWith('"') && args[i].endsWith('"')) {
-                args[i] = args[i].slice(1, -1);
-            }
-        }
-
+        const args = message.content.slice(prefix.length).trim()
+            .match(/[^\s"']+|"([^"]*)"|'([^']*)'|[^\s"']+/g)
+            ?.map(arg => arg.replace(/^["']|["']$/g, '')) || [];
+        
         const commandName = args.shift().toLowerCase();
 
         // Debug: Log command and arguments
-        console.log(`Command detected: ${commandName}, Args: ${args}`);
+        console.log(`Command detected: ${commandName}, Args:`, args);
 
         const prefixCommand = client.prefixCommands.get(commandName);
         if (!prefixCommand) {
