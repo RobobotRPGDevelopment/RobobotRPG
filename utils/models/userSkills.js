@@ -15,45 +15,55 @@ const AVAILABLE_SKILLS = [
 const userSkillsSchema = new mongoose.Schema({
     userId: { type: String, required: true },
     guildId: { type: String, required: true },
-    magic: {
-        level: { type: Number, default: 0 },
-        experience: { type: Number, default: 0 },
-        difficulty: { type: Number, default: 1 }
-    },
-    woodcutting: {
-        level: { type: Number, default: 0 },
-        experience: { type: Number, default: 0 },
-        difficulty: { type: Number, default: 1 }
-    },
-    mining: {
-        level: { type: Number, default: 0 },
-        experience: { type: Number, default: 0 },
-        difficulty: { type: Number, default: 1 }
-    },
-    herbalism: {
-        level: { type: Number, default: 0 },
-        experience: { type: Number, default: 0 },
-        difficulty: { type: Number, default: 1 }
-    },
-    alchemy: {
-        level: { type: Number, default: 0 },
-        experience: { type: Number, default: 0 },
-        difficulty: { type: Number, default: 1 }
-    },
-    meditation: {
-        level: { type: Number, default: 0 },
-        experience: { type: Number, default: 0 },
-        difficulty: { type: Number, default: 1 }
-    },
-    swordsmanship: {
-        level: { type: Number, default: 0 },
-        experience: { type: Number, default: 0 },
-        difficulty: { type: Number, default: 1 }
-    },
-    archery: {
-        level: { type: Number, default: 0 },
-        experience: { type: Number, default: 0 },
-        difficulty: { type: Number, default: 1 }
+    skills: {
+        magic: {
+            level: { type: Number, default: 0 },
+            experience: { type: Number, default: 0 },
+            difficulty: { type: Number, default: 1 },
+            unlocked: { type: Boolean, default: false },
+        },
+        woodcutting: {
+            level: { type: Number, default: 0 },
+            experience: { type: Number, default: 0 },
+            difficulty: { type: Number, default: 1 },
+            unlocked: { type: Boolean, default: false }
+        },
+        mining: {
+            level: { type: Number, default: 0 },
+            experience: { type: Number, default: 0 },
+            difficulty: { type: Number, default: 1 },
+            unlocked: { type: Boolean, default: false }
+        },
+        herbalism: {
+            level: { type: Number, default: 0 },
+            experience: { type: Number, default: 0 },
+            difficulty: { type: Number, default: 1 },
+            unlocked: { type: Boolean, default: false }
+        },
+        alchemy: {
+            level: { type: Number, default: 0 },
+            experience: { type: Number, default: 0 },
+            difficulty: { type: Number, default: 1 },
+            unlocked: { type: Boolean, default: false }
+        },
+        meditation: {
+            level: { type: Number, default: 0 },
+            experience: { type: Number, default: 0 },
+            difficulty: { type: Number, default: 1 },
+            unlocked: { type: Boolean, default: false }
+        },
+        swordsmanship: {
+            level: { type: Number, default: 0 },
+            experience: { type: Number, default: 0 },
+            difficulty: { type: Number, default: 1 },
+            unlocked: { type: Boolean, default: false }
+        },
+        archery: {
+            level: { type: Number, default: 0 },
+            experience: { type: Number, default: 0 },
+            difficulty: { type: Number, default: 1 },
+            unlocked: { type: Boolean, default: false }
+        },
     },
     paradigms: [{
         category: { 
