@@ -22,5 +22,8 @@
     "dotenv": "^16.4.7",
     "mongodb": "^6.12.0",
     "mongoose": "^8.12.1"
+  },
+  "devDependencies": {
+    "didyoumean": "^1.2.2"
   }
 }
