@@ -1,4 +1,4 @@
-const serverSettings = require('../../utils/serverSettings');
+const serverSettings = require('../../utils/models/serverSettings');
 
 module.exports = {
     name: "setprefix",

@@ -1,5 +1,5 @@
-const UserBalance = require('../utils/userBalance'); // Import user balance schema
-const serverSettings = require('../utils/serverSettings'); // Import server settings
+const User = require('../../utils/models/User'); // Import user balance schema
+const serverSettings = require('../../utils/models/serverSettings'); // Import server settings
 
 module.exports = {
     name: "bet",
@@ -14,7 +14,6 @@ module.exports = {
                 `Usage: ${prefix}bet ${prefix}roll {x}d{y} {condition/number} {amount} (e.g., ${prefix}bet ${prefix}roll 1d20 15 50)`
             );
         }
-
         const chainedCommand = args[0].toLowerCase(); // e.g., $roll
         const rollParams = args[1]; // e.g., 1d20
         const conditionOrNumber = args[2].toLowerCase(); // e.g., over, under, or exact number
@@ -39,27 +38,27 @@ module.exports = {
         }
 
         // Fetch user balance
-        const userBalance = await UserBalance.findOne({
+        const user = await User.findOne({
             userId: message.author.id,
             guildId: message.guild.id,
         });
 
-        if (!userBalance) {
+        if (!user) {
             return message.reply(
                 "You do not have a balance record. Try rejoining the server or ask an admin to refresh your balance."
             );
         }
 
         // Check if the user has enough balance
-        if (userBalance.balance < betAmount) {
+        if (user.balance < betAmount) {
             return message.reply(
                 `You do not have enough balance to place this bet. Your current balance is ${userBalance.balance}.`
             );
         }
 
         // Deduct the bet amount
-        userBalance.balance -= betAmount;
-        await userBalance.save();
+        user.balance -= betAmount;
+        await user.save();
 
         // Roll the dice
         const rolls = [];
@@ -113,18 +112,18 @@ module.exports = {
 
         // Reward if the user wins
         if (win) {
-            userBalance.balance += payout;
-            await userBalance.save();
+            user.balance += payout;
+            await user.save();
             return message.reply(
                 `${result}\nOdds: ${odds}%\nYou won ${payout.toFixed(
                     2
-                )} coins! Your new balance is ${userBalance.balance.toFixed(2)}.`
+                )} coins! Your new balance is ${user.balance.toFixed(2)}.`
             );
         } else {
             return message.reply(
                 `${result}\nOdds: ${odds}%\nYou lost ${betAmount.toFixed(
                     2
-                )} coins. Your new balance is ${userBalance.balance.toFixed(2)}.`
+                )} coins. Your new balance is ${user.balance.toFixed(2)}.`
             );
         }
     },

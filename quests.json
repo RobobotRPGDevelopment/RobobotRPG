@@ -1,0 +1,38 @@
+{
+"levels": [
+    {
+        "level": 0,
+        "quests": [
+        {
+            "name": "Mine 5 Iron Ore",
+            "elevatorDescription": "A few steps into Swann's Mountain, there is a deposit of Iron Ore.",
+            "reward": 100,
+            "experience": 50,
+            "skills": ["mining"],
+            "requirements": {
+                "mining": 0
+            }
+        },
+        {
+            "name": "Mine 5 Coal Ore",
+            "elevatorDescription": "Right beside Bristles Garden is an abandoned coal mine. Avoid the old woman who lives at the garden or you'll lose your morning.",
+            "reward": 100,
+            "experience": 50,
+            "skills": ["mining"],
+            "requirements": {
+                "mining": 0
+            }
+        }
+        ]
+    },
+    {
+        "level": 1,
+        "quests": [
+            {
+                "name": "",
+                "elevatorDescription": ""
+            }
+        ]
+    }
+]
+}

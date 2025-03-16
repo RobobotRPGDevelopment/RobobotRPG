@@ -1,4 +1,4 @@
-const Vote = require('./voteSchema'); // Adjust path based on where the schema is stored
+const Vote = require('../models/voteSchema'); // Adjust path based on where the schema is stored
 
 /**
  * Function to check for expired votes and process them.
