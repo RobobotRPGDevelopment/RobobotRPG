@@ -8,7 +8,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const token = process.env.TOKEN;
-
 // Import server settings schema for prefix handling
 const serverSettings = require('./utils/models/serverSettings');
 
@@ -154,9 +153,10 @@ client.on('messageCreate', async (message) => {
         // Process regular commands
         if (!message.content.startsWith(prefix)) return;
         const args = message.content.slice(prefix.length).trim()
+            .replace(/[\u2018\u2019]/g, "'") //replace curly singles
+            .replace(/[\u201C\u201D]/g, '"') //replace curly quotes
             .match(/[^\s"']+|"([^"]*)"|'([^']*)'|[^\s"']+/g)
             ?.map(arg => arg.replace(/^["']|["']$/g, '')) || [];
-        
         const commandName = args.shift().toLowerCase();
 
         // Debug: Log command and arguments

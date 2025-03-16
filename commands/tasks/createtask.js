@@ -61,7 +61,7 @@ module.exports = {
                 );
             }
             else {
-                message.reply(`Paradigm already exists: ${paradigm.paradigm.skill}`);
+                //message.reply(`Paradigm already exists: ${paradigm.paradigm.skill}`);
             }
         }
         catch (error) {

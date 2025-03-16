@@ -17,13 +17,12 @@
   },
   "homepage": "https://github.com/solomonglazer/RobobotRPG#readme",
   "description": "",
-  "dependencies": {
+  "devDependencies": {
+    "didyoumean": "^1.2.2",
     "discord.js": "^14.18.0",
     "dotenv": "^16.4.7",
-    "mongodb": "^6.12.0",
+    "eslint": "^9.22.0",
+    "mongodb": "^6.14.2",
     "mongoose": "^8.12.1"
-  },
-  "devDependencies": {
-    "didyoumean": "^1.2.2"
   }
 }
