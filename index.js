@@ -2,7 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-
+const didYouMean = require('didyoumean');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -136,7 +136,6 @@ client.on('messageCreate', async (message) => {
                     client.listenNextMessage = false;
                     client.nextMessageAuthor = null;
                     client.nextMessageHandler = null;
-                    
                     // Return to prevent processing as a command
                     return;
                 } catch (error) {
