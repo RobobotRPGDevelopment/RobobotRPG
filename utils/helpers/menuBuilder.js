@@ -1,3 +1,7 @@
+// NEED TO PROPERLY ATTRIBUTED THIS CODE - ITS NOT MINE
+
+
+
 const { StringSelectMenuBuilder, ActionRowBuilder, StringSelectMenuOptionBuilder, ComponentType } = require('discord.js');
 
 /**
@@ -25,7 +29,7 @@ async function createMenu({
 }) {
     // Create the select menu
     const selectMenu = new StringSelectMenuBuilder()
-        .setCustomId(`menu-${Date.now()}`)
+        .setCustomId(`menu-${message.author.id}-${Date.now()}`)
         .setPlaceholder(placeholder)
         .setMinValues(minValues)
         .setMaxValues(maxValues)
@@ -42,7 +46,8 @@ async function createMenu({
     // Send the message with the dropdown menu
     const reply = await message.reply({
         content: placeholder,
-        components: [actionRow]
+        components: [actionRow],
+        ephemeral: true
     });
     
     // Create a collector for interactions with this menu
