@@ -8,7 +8,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const token = process.env.TOKEN;
-
 // Import server settings schema for prefix handling
 const serverSettings = require('./utils/models/serverSettings');
 

@@ -5,6 +5,7 @@ const taskSchema = new mongoose.Schema({
     userId: { type: String, required: true },
     guildId: { type: String, required: true },
     name: { type: String, required: true },
+    name_lower: { type: String, required: true },
     category: { type: String, required: false},
     difficulty: { type: Number, required: false},
     completed: { type: Boolean, default: false},
