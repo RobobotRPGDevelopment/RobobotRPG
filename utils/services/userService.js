@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const UserCompletedQuests = require('../models/UserCompletedQuests');
 const UserSkills = require('../models/userSkills');
+const Quest = require('../models/Quest');
 
 class UserService {
     /**

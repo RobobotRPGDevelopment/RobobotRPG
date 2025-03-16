@@ -35,6 +35,11 @@ const client = new Client({
     }
 })();
 
+// For handling message content in the next message after a command
+client.listenNextMessage = false;
+client.nextMessageAuthor = null;
+client.nextMessageArgs = null;
+client.nextMessageHandler = null;
 // Command Handling
 //client.commands = new Collection(); // Collection for slash commands
 client.prefixCommands = new Map(); // Collection for prefix commands
@@ -118,7 +123,36 @@ client.on('messageCreate', async (message) => {
 
         // Debug: Log detected prefix
         console.log(`Detected prefix for guild ${message.guild.name}: ${prefix}`);
-
+        
+        // Handle next message logic
+        if (client.listenNextMessage) {
+            // Only process if it's from the expected author and not a command
+            if (!message.content.startsWith(prefix) && message.author.id === client.nextMessageAuthor) {
+                try {
+                    // Execute the handler with proper parameters
+                    await client.nextMessageHandler(client, message);
+                    
+                    // Reset the handler state
+                    client.listenNextMessage = false;
+                    client.nextMessageAuthor = null;
+                    client.nextMessageHandler = null;
+                    
+                    // Return to prevent processing as a command
+                    return;
+                } catch (error) {
+                    console.error("Error in nextMessageHandler:", error);
+                    message.reply("An error occurred processing your response. Please try again.");
+                    
+                    // Reset the handler state on error
+                    client.listenNextMessage = false;
+                    client.nextMessageAuthor = null;
+                    client.nextMessageHandler = null;
+                    return;
+                }
+            }
+        }
+        
+        // Process regular commands
         if (!message.content.startsWith(prefix)) return;
         const args = message.content.slice(prefix.length).trim()
             .match(/[^\s"']+|"([^"]*)"|'([^']*)'|[^\s"']+/g)

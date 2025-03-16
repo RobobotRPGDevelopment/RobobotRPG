@@ -16,8 +16,11 @@ const UserSchema = new mongoose.Schema({
     availableQuests: [{
         quest: { type: mongoose.Schema.Types.ObjectId, ref: 'Quest' },
         expiresAt: { type: Date, default: null }
-    }]
-}, { 
+    }],
+    pendingTask: {
+        name: { type: String, default: null },
+    }
+    }, {
     timestamps: true,
     methods: {
         async acceptQuest(questIndex) {
