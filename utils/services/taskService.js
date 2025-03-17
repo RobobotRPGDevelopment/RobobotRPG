@@ -1,4 +1,5 @@
 const Task = require('../models/Task');
+const UserCompletedTasks = require('../models/UserCompletedTasks');
 const MAX_TASKS = 5;
 const didYouMean = require('didyoumean');
 class TaskService {
@@ -22,6 +23,14 @@ class TaskService {
         }
         task.completed = true;
         await task.save();
+        await this.addCompletedTask(userId, guildId, {
+            name: task.name,
+            name_lower: task.name_lower,
+            category: task.category,
+            difficulty: task.difficulty,
+            completed: task.completed,
+            dueDate: task.dueDate,
+        });
         return {task: task, err: null};
     }
     static async findByUser(userId, guildId) {
@@ -43,6 +52,33 @@ class TaskService {
             return {task: null, err: "Task not found", didYouMean: suggestion};
         }
         return {task: task, err: null}; // Will be null if no task found
+    }
+    // COMPLETED TASKS
+    static async addCompletedTask(userId, guildId, taskId) {
+        const result = await UserCompletedTasks.findOneAndUpdate(
+            { userId, guildId },
+            { $push: { completedTasks: taskId } },
+            { upsert: true, new: true }
+        );
+        return result;
+    }
+    static async findCompletedTasks(userId, guildId) {
+        const completedTasks = await UserCompletedTasks.findOne({ userId, guildId });
+        return completedTasks;
+    }
+
+    static async createCompletedTasks(userId, guildId) {
+        const completedTasks = await UserCompletedTasks.create({ userId, guildId });
+        return completedTasks;
+    }
+
+    static async getOrCreateCompletedTasks(userId, guildId) {
+        let completedTasks = await UserCompletedTasks.findOne({ userId, guildId });
+        if (!completedTasks) {
+            completedTasks = await this.createCompletedTasks(userId, guildId);
+            return {completedTasks, isNew: true};
+        }
+        return {completedTasks, isNew: false};
     }
 }
 
