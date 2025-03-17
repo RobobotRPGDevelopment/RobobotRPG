@@ -5,8 +5,6 @@ const userCompletedTasksSchema = new mongoose.Schema({
     guildId: { type: String, required: true },
     completedTasks: [{
         task: {
-            userId: { type: String, required: true },
-            guildId: { type: String, required: true },
             name: { type: String, required: true },
             name_lower: { type: String, required: true },
             category: { type: String, required: false},

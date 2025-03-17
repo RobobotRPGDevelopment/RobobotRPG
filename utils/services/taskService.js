@@ -27,8 +27,6 @@ class TaskService {
             name: task.name,
             name_lower: task.name_lower,
             category: task.category,
-            difficulty: task.difficulty,
-            completed: task.completed,
             dueDate: task.dueDate,
         });
         return {task: task, err: null};
