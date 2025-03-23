@@ -1,4 +1,3 @@
-.
 ├── commands/                  # Command definitions (organized by category)
 │   ├── admin/                 # Admin-only commands
 │   ├── info/                  # Informational commands
